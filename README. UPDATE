@@ -1,0 +1,26 @@
+# repo-template Standard template for a GD repository.  #
+
+**Please update this README with a name and description of your project.**
+
+1./ SE will do the following manually
+Create subnets with /26 mask bit (59 available IP) delegated to - "Microsoft.ContainerInstance/containerGroups" for each environment / location
+Add subnets into allowed networks of the key vault (according to the environment / location)
+
+az container create \
+    --resource-group $ResourceGroup_ACI \
+    --name $AzureContainerName \
+    --image $imageName \
+    --registry-username $ServicePrincipleAppId \
+    --registry-password "$ServicePrinciplePassword" \
+    --cpu $cpu \
+    --memory $memory \
+    --restart-policy $restartPolicy \
+    --subnet $subnet \
+    --environment-variables "ASPNETCORE_ENVIRONMENT=$envUpper" \
+    --assign-identity
+***********************************************************************************
+
+2./SE create the resources via Terraform
+
+Terraform azurerm-aci module: https://github.com/Green-Dot-Corporation/terraform-azurerm-aci
+Reference composition repo: https://github.com/Green-Dot-Corporation/tf-az-aci-feedlistener-cbs
